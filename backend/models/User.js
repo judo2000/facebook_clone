@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const ObjectId = mongoose.Schema;
 
-const userSchema = monoose.Schema(
+const userSchema = new mongoose.Schema(
   {
     first_name: {
       type: String,
@@ -50,7 +50,7 @@ const userSchema = monoose.Schema(
       required: true,
       trim: true,
     },
-    bMonty: {
+    bMonth: {
       type: Number,
       required: true,
       trim: true,
@@ -83,7 +83,7 @@ const userSchema = monoose.Schema(
     search: [
       {
         user: {
-          type: ObjectId,
+          type: mongoose.Schema.ObjectId,
           ref: 'User',
         },
       },
@@ -124,7 +124,7 @@ const userSchema = monoose.Schema(
     savedPosts: [
       {
         post: {
-          type: ObjectId,
+          type: mongoose.Schema.ObjectId,
           ref: 'Post',
         },
         savedAt: {
@@ -139,4 +139,5 @@ const userSchema = monoose.Schema(
   }
 );
 
-module.exports = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
+module.exports = User;
