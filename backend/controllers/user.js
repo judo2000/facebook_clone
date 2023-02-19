@@ -108,3 +108,35 @@ exports.activateAccount = async (req, res) => {
       .json({ message: 'Account has been activated successfully.' });
   }
 };
+
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({
+        message:
+          'The email address enterd is not connected to an account.  Please check the email and try again',
+      });
+    }
+    const check = await bcrypt.compare(password, user.password);
+    if (!check) {
+      return res
+        .status(400)
+        .json({ message: 'Invalid Credentials.  Please try again.' });
+    }
+    const token = generateToken({ id: user._id.toString() }, '7d');
+    res.send({
+      id: user._id,
+      username: user.username,
+      picture: user.picture,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      token: token,
+      verified: user.verified,
+      message: 'Registered successfully | Please activate your email to start.',
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
