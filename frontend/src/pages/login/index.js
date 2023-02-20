@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import './styles.css';
 import LoginInput from '../../components/inputs/loginInput';
@@ -13,11 +14,19 @@ const Login = () => {
   const [login, setLogin] = useState(loginInfo);
   const { email, password } = login;
 
-  const handleLoginChange = async (e) => {
-    e.preventDefault();
+  const handleLoginChange = (e) => {
     const { name, value } = e.target;
     setLogin({ ...login, [name]: value });
   };
+
+  const loginValidation = Yup.object({
+    email: Yup.string()
+      .required('Email address is required.')
+      .email('Must be a valid email.')
+      .max(100),
+    password: Yup.string().required('Password is required'),
+  });
+
   return (
     <div className="login">
       <div className="login_wrapper">
@@ -33,9 +42,10 @@ const Login = () => {
               <Formik
                 enableReinitialize
                 initialValues={{
-                  email: '',
-                  password: '',
+                  email,
+                  password,
                 }}
+                validationSchema={loginValidation}
               >
                 {(formik) => (
                   <Form>
@@ -50,6 +60,7 @@ const Login = () => {
                       name="password"
                       placeholder="Password"
                       onChange={handleLoginChange}
+                      bottom
                     />
                     <button type="submit" className="blue_btn">
                       Log In
@@ -64,8 +75,7 @@ const Login = () => {
               <button className="blue_btn open_signup">Create Account</button>
             </div>
             <Link to="/" className="sign_extra">
-              <b>Create a Page</b>
-              for a celebrity, band or business.
+              <b>Create a Page</b> for a celebrity, band or business.
             </Link>
           </div>
         </div>
