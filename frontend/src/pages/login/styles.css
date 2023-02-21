@@ -108,7 +108,7 @@
 
 .footer_square i {
   transform: scale(0.8);
-  -webkit-filter: invert(40%);
+  --webkit-filter: invert(40%);
 }
 
 .footer_splitter {
