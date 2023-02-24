@@ -1,6 +1,7 @@
 import { Form, Formik } from 'formik';
 import { useState } from 'react';
 import RegisterInput from '../inputs/registerInput';
+import * as Yup from 'yup';
 
 const RegisterForm = () => {
   const userInfo = {
@@ -39,6 +40,29 @@ const RegisterForm = () => {
     setUser({ ...user, [name]: value });
   };
 
+  const registerValidation = Yup.object({
+    first_name: Yup.string()
+      .required('First name is required.')
+      .min(2, 'First name must be between 2 and 16 character.')
+      .max(16, 'First name must be between 2 and 16 characters.')
+      .matches(/^[aA-zZ]+$/, 'Numbers and special characters are not allowed.'),
+    last_name: Yup.string()
+      .required('Last name is required.')
+      .min(2, 'Last name must be between 2 and 16 character.')
+      .max(16, 'Last name must be between 2 and 16 characters.')
+      .matches(/^[aA-zZ/-]+$/, 'Only letters and "-" are allowed.'),
+    email: Yup.string()
+      .required(
+        "You'll need this when you log in or if you ever need to reset your password."
+      )
+      .email('Please enter a valid email address.'),
+    password: Yup.string()
+      .required(
+        'Enter a combination of at least six numbers, letters, and punctuation marks(such as ! or &).'
+      )
+      .min(6, 'Password must be at least 6 characters long.')
+      .max(16, 'Password must not be longer than 16 characters.'),
+  });
   return (
     <div className="blur">
       <div className="register">
@@ -47,7 +71,20 @@ const RegisterForm = () => {
           <span>Sign up</span>
           <span>It's quick and easy</span>
         </div>
-        <Formik>
+        <Formik
+          enableReinitialize
+          initialValues={{
+            first_name,
+            last_name,
+            email,
+            password,
+            bYear,
+            bMonth,
+            bDay,
+            gender,
+          }}
+          validationSchema={registerValidation}
+        >
           {(formik) => (
             <Form className="register_form">
               <div className="reg_line">
