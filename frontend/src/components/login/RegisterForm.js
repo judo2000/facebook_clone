@@ -6,8 +6,13 @@ import DateOfBirthSelect from './DateOfBirthSelect';
 import GenderSelect from './GenderSelect';
 import DotLoader from 'react-spinners/DotLoader';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userInfo = {
     first_name: '',
     last_name: '',
@@ -18,7 +23,7 @@ const RegisterForm = () => {
     bDay: new Date().getDate(),
     gender: '',
   };
-  console.log(userInfo);
+
   const [user, setUser] = useState(userInfo);
   const {
     first_name,
@@ -38,7 +43,6 @@ const RegisterForm = () => {
   };
   const days = Array.from(new Array(getDays()), (val, index) => 1 + index);
 
-  console.log(days);
   const handleRegisterChange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -91,6 +95,12 @@ const RegisterForm = () => {
       );
       setError('');
       setSuccess(data.message);
+      const { message, ...rest } = data;
+      setTimeout(() => {
+        dispatch({ type: 'LOGIN', payload: rest });
+        Cookies.set('user', JSON.stringify(rest));
+        navigate('/');
+      }, 2000);
     } catch (error) {
       setLoading(false);
       setSuccess('');
