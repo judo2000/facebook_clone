@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
-const RegisterForm = () => {
+const RegisterForm = ({ setVisible }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userInfo = {
@@ -111,7 +111,7 @@ const RegisterForm = () => {
     <div className="blur">
       <div className="register">
         <div className="register_header">
-          <i className="exit_icon"></i>
+          <i className="exit_icon" onClick={() => setVisible(false)}></i>
           <span>Sign up</span>
           <span>It's quick and easy</span>
         </div>
