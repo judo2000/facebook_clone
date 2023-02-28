@@ -4,6 +4,8 @@ import RegisterInput from '../inputs/registerInput';
 import * as Yup from 'yup';
 import DateOfBirthSelect from './DateOfBirthSelect';
 import GenderSelect from './GenderSelect';
+import DotLoader from 'react-spinners/DotLoader';
+import axios from 'axios';
 
 const RegisterForm = () => {
   const userInfo = {
@@ -67,6 +69,34 @@ const RegisterForm = () => {
   });
   const [dobError, setDobError] = useState('');
   const [genderError, setGenderError] = useState('');
+
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const registerSubmit = async () => {
+    try {
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/register`,
+        {
+          first_name,
+          last_name,
+          email,
+          password,
+          bYear,
+          bMonth,
+          bDay,
+          gender,
+        }
+      );
+      setError('');
+      setSuccess(data.message);
+    } catch (error) {
+      setLoading(false);
+      setSuccess('');
+      setError(error.response.data.message);
+    }
+  };
   return (
     <div className="blur">
       <div className="register">
@@ -109,6 +139,7 @@ const RegisterForm = () => {
             } else {
               setDobError('');
               setGenderError('');
+              registerSubmit();
             }
           }}
         >
@@ -177,6 +208,9 @@ const RegisterForm = () => {
               <div className="reg_btn_wrapper">
                 <button className="blue_btn open_signup">Sign Up</button>
               </div>
+              <DotLoader color="#1876f2" loading={loading} size={30} />
+              {error && <div className="error_text">{error}</div>}
+              {success && <div className="success_text">{success}</div>}
             </Form>
           )}
         </Formik>
