@@ -88,7 +88,9 @@ const Header = () => {
               setShowAllMenu((prev) => !prev);
             }}
           >
-            <Menu />
+            <div style={{ transform: 'translateY(2px)' }}>
+              <Menu />
+            </div>
           </div>
           {showAllMenu && <AllMenu />}
         </div>
@@ -104,7 +106,9 @@ const Header = () => {
           ref={userMenu}
         >
           <div onClick={() => setShowUserMenu((prev) => !prev)}>
-            <ArrowDown />
+            <div style={{ transform: 'translateY(2px)' }}>
+              <ArrowDown />
+            </div>
           </div>
           {showUserMenu && <UserMenu user={user} />}
         </div>
