@@ -8,12 +8,30 @@ const ImagePreview = ({
   images,
   setImages,
   setShowPrev,
+  setError,
 }) => {
   const imageInputRef = useRef(null);
 
   const handleImage = (e) => {
     let files = Array.from(e.target.files);
     files.forEach((img) => {
+      if (
+        img.type !== 'image/jpg' &&
+        img.type !== 'image/jpeg' &&
+        img.type !== 'image/png' &&
+        img.type !== 'image/gif' &&
+        img.type !== 'image/webp'
+      ) {
+        setError(
+          `${img.name} format is not supported | only Jpeg, Gif, Png, and Webp files are allowed`
+        );
+        files = files.filter((item) => item.name !== img.name);
+        return;
+      } else if (img.size > 1024 * 1024 * 5) {
+        setError(`${img.name} size is too large.  Max is 5MB allowed per file`);
+        files = files.filter((item) => item.name !== img.name);
+        return;
+      }
       const reader = new FileReader();
       reader.readAsDataURL(img);
       reader.onload = (readerEvent) => {
@@ -28,6 +46,7 @@ const ImagePreview = ({
       <div className="add_pics_wrap">
         <input
           type="file"
+          accept="image/jpeg, image/jpg, image/png, image/gif, impage/webp"
           multiple
           hidden
           ref={imageInputRef}

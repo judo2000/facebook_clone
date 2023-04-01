@@ -27,7 +27,7 @@ const uploadToCloudinary = async (file, path) => {
     cloudinary.v2.uploader.upload(
       file.tempFilePath,
       {
-        foler: path,
+        folder: path,
       },
       (err, res) => {
         if (err) {
