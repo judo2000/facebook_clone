@@ -3,6 +3,6 @@ exports.createPost = async (req, res) => {
     const post = await new Post(req.body).save();
     res.json(post);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
