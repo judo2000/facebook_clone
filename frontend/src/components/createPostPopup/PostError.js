@@ -1,5 +1,3 @@
-import React from 'react';
-
 const PostError = ({ error, setError }) => {
   return (
     <div className="postError">

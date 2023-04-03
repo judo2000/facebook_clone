@@ -5,7 +5,7 @@ const CreatePost = ({ user, setPostVisible }) => {
   return (
     <div className="createPost">
       <div className="createPost_header">
-        <img src={user?.picture} alt="" />
+        <img src="/images/default.jpg" alt="" />
         <div className="open_post hover2" onClick={() => setPostVisible(true)}>
           What's on your mind, {user?.first_name}?
         </div>

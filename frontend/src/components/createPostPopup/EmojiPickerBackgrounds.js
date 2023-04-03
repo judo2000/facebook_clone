@@ -95,15 +95,16 @@ const EmojiPickerBackgrounds = ({
               onClick={() => {
                 removeBackground();
               }}
-            ></div>
-            {postBackgrounds.map((bg, i) => (
-              <img
-                src={bg}
-                key={i}
-                alt=""
-                onClick={() => backgroundHandler(i)}
-              />
-            ))}
+            >
+              {postBackgrounds.map((bg, i) => (
+                <img
+                  src={bg}
+                  key={i}
+                  alt=""
+                  onClick={() => backgroundHandler(i)}
+                />
+              ))}
+            </div>
           </div>
         )}
         <i
