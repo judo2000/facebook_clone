@@ -107,6 +107,7 @@ const RegisterForm = ({ setVisible }) => {
       setError(error.response.data.message);
     }
   };
+
   return (
     <div className="blur">
       <div className="register">

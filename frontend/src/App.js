@@ -9,36 +9,16 @@ import CreatePostPopup from './components/createPostPopup';
 import { useSelector } from 'react-redux';
 import { useEffect, useReducer, useState } from 'react';
 import axios from 'axios';
+import { postsReducer } from './functions/reducers';
 
-function reducer(state, action) {
-  switch (action.type) {
-    case 'POSTS_REQUEST':
-      return { ...state, loading: true, error: '' };
-    case 'POSTS_SUCCESS':
-      return {
-        ...state,
-        loading: false,
-        posts: action.payload,
-        error: '',
-      };
-    case 'POSTS_ERROR':
-      return { ...state, loading: false, error: action.payload };
-
-    default:
-      return state;
-  }
-}
 const App = () => {
   const { user } = useSelector((state) => ({ ...state }));
   const [postVisible, setPostVisible] = useState(false);
-  const [{ loading, error, posts }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, posts }, dispatch] = useReducer(postsReducer, {
     loading: false,
     posts: [],
     error: '',
   });
-  useEffect(() => {
-    getAllPosts();
-  }, []);
 
   const getAllPosts = async () => {
     try {
@@ -72,11 +52,25 @@ const App = () => {
       )}
       <Routes>
         <Route element={<LoggedInRoutes />}>
-          <Route path="/profile" element={<Profile />} exact />
-          <Route path="/profile/:username" element={<Profile />} exact />
+          <Route
+            path="/profile"
+            element={<Profile setPostVisible={setPostVisible} />}
+            exact
+          />
+          <Route
+            path="/profile/:username"
+            element={<Profile setVisible={setPostVisible} />}
+            exact
+          />
           <Route
             path="/"
-            element={<Home setPostVisible={setPostVisible} posts={posts} />}
+            element={
+              <Home
+                setPostVisible={setPostVisible}
+                posts={posts}
+                getAllPosts={getAllPosts}
+              />
+            }
           />
           <Route path="/activate/:token" element={<Activate />} exact />
         </Route>

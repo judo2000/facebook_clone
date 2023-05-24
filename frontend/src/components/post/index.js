@@ -2,10 +2,17 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import './style.css';
 import { Dots, Public } from '../../svg';
+import ReactPopup from './ReactPopup';
+import { useState } from 'react';
+import CreateComment from './CreateComment';
+import PostMenu from './PostMenu';
 
-const Post = ({ post }) => {
+const Post = ({ post, user, profile }) => {
+  const [visible, setVisible] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+
   return (
-    <div className="post">
+    <div className="post" style={{ width: `${profile && '100%'}` }}>
       <div className="post_header">
         <Link
           to={`/profile/${post.user.username}`}
@@ -17,12 +24,12 @@ const Post = ({ post }) => {
               {post.user.first_name} {post.user.last_name}
               <div className="updated_p">
                 {post.type === 'profilePicture' &&
-                  `update ${
-                    post.user.gener === 'male' ? 'his' : 'her'
+                  `updated ${
+                    post.user.gender === 'male' ? 'his' : 'her'
                   } profile picture`}
                 {post.type === 'cover' &&
-                  `update ${
-                    post.user.gener === 'male' ? 'his' : 'her'
+                  `updated ${
+                    post.user.gender === 'male' ? 'his' : 'her'
                   } cover picture`}
               </div>
             </div>
@@ -34,7 +41,10 @@ const Post = ({ post }) => {
             </div>
           </div>
         </Link>
-        <div className="post_header_right hover1">
+        <div
+          className="post_header_right hover1"
+          onClick={() => setShowMenu((prev) => !prev)}
+        >
           <Dots color="#828387" />
         </div>
       </div>
@@ -45,7 +55,7 @@ const Post = ({ post }) => {
         >
           <div className="post_bg_text">{post.text}</div>
         </div>
-      ) : (
+      ) : post.type === null ? (
         <>
           <div className="post_text">{post.text}</div>
           {post.images && post.images.length && (
@@ -73,6 +83,70 @@ const Post = ({ post }) => {
             </div>
           )}
         </>
+      ) : post.type === 'profilePicture' ? (
+        <div className="post_profile_wrap">
+          <div className="post_updated_bg">
+            <img src={post.user.cover} alt="" />
+          </div>
+          <img
+            src={post.images[0].url}
+            alt=""
+            className="post_updated_picture"
+          />
+        </div>
+      ) : (
+        <div className="post_cover_wrap">
+          <img src={post.images[0].url} alt="" />
+        </div>
+      )}
+      <div className="post_info">
+        <div className="reacts_count">
+          <div className="reacts_count_imgs"></div>
+          <div className="reacts_count_num"></div>
+        </div>
+        <div className="to_right">
+          <div className="comments_count">13 comments</div>
+          <div className="share_count">1 share</div>
+        </div>
+      </div>
+      <div className="post_actions">
+        <ReactPopup visible={visible} setVisible={setVisible} />
+        <div
+          className="post_action hover1"
+          onMouseOver={() => {
+            setTimeout(() => {
+              setVisible(true);
+            }, 500);
+          }}
+          onMouseLeave={() => {
+            setTimeout(() => {
+              setVisible(false);
+            }, 500);
+          }}
+        >
+          <i className="like_icon"></i>
+          <span>Like</span>
+        </div>
+        <div className="post_action hover1">
+          <i className="comment_icon"></i>
+          <span>Comment</span>
+        </div>
+        <div className="post_action hover1">
+          <i className="share_icon"></i>
+          <span>Share</span>
+        </div>
+      </div>
+      <div className="comment_wrap">
+        <div className="comments_order"></div>
+        <CreateComment user={user} />
+      </div>
+      {showMenu && (
+        <PostMenu
+          userId={user.id}
+          postUserId={post.user._id}
+          imagesLength={post?.images?.length}
+          setShowMenu={setShowMenu}
+        />
       )}
     </div>
   );

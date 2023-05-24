@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+
 exports.createPost = async (req, res) => {
   try {
     const { type, background, text, images, user, token } = req.body;

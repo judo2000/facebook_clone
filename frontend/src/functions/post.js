@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 export const createPost = async (
   type,
   background,
@@ -9,7 +8,6 @@ export const createPost = async (
   token
 ) => {
   try {
-    console.log('Im am the function');
     const { data } = await axios.post(
       `${process.env.REACT_APP_BACKEND_URL}/createPost`,
       {

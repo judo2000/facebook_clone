@@ -78,7 +78,7 @@ const EmojiPickerBackgrounds = ({
               type2 ? 'movepicker2' : 'rlmove'
             }`}
           >
-            <Picker onEmojiClick={handleEmoji} />
+            <Picker theme="twitter" onEmojiClick={handleEmoji} />
           </div>
         )}
         {!type2 && (

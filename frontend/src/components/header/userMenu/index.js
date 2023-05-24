@@ -12,9 +12,8 @@ const UserMenu = ({ user }) => {
 
   const [visible, setVisible] = useState(0);
   const logout = () => {
-    Cookies.set('user', '');
     dispatch({
-      type: 'LOGOUT',
+      type: 'AUTH_LOGOUT',
     });
     navigate('/');
   };

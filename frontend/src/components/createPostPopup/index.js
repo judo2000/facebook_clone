@@ -11,6 +11,7 @@ import dataURItoBlob from '../../helpers/dataURItoBlob';
 import { uploadImages } from '../../functions/uploadImages';
 
 const CreatePostPopup = ({ user, setPostVisible }) => {
+  console.log(user);
   const popup = useRef(null);
   const [text, setText] = useState('');
   const [showPrev, setShowPrev] = useState(false);
@@ -46,7 +47,7 @@ const CreatePostPopup = ({ user, setPostVisible }) => {
       const postImages = images.map((img) => {
         return dataURItoBlob(img);
       });
-      const path = `facebook/${user.username}/post Images`;
+      const path = `facebook/${user.username}/post_images`;
       let formData = new FormData();
       formData.append('path', path);
       postImages.forEach((image) => {

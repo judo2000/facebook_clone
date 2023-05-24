@@ -383,6 +383,12 @@
   height: 360px;
   margin-top: 10px;
 }
+/*-----Comments-----*/
+.comment_error {
+  padding: 0 !important;
+  opacity: 1 !important;
+}
+/*-----Comments-----*/
 /*-----Post Error-----*/
 .postError {
   position: absolute;
