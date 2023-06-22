@@ -77,7 +77,7 @@ const Cover = ({ cover, visitor, photos }) => {
       setLoading(true);
       let img = await getCroppedImage();
       let blob = await fetch(img).then((b) => b.blob());
-      const path = `facebook/${user.username}/cover_pictures`;
+      const path = `tyt/${user.username}/cover_pictures`;
       let formData = new FormData();
       formData.append('file', blob);
       formData.append('path', path);

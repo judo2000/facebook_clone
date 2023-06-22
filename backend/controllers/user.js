@@ -215,3 +215,21 @@ exports.updateCover = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+exports.updateDetails = async (req, res) => {
+  try {
+    const { info } = req.body;
+    const updated = await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        details: info,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(updated.details);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
