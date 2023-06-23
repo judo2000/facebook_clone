@@ -32,8 +32,13 @@ const Profile = ({ setPostVisible }) => {
     getProfile();
   }, [username]);
 
+  useEffect(() => {
+    setOtherName(profile?.details?.otherName);
+  }, [profile]);
+
   var visitor = userName === user.username ? false : true;
 
+  const [otherName, setOtherName] = useState();
   const path = `facebook/${userName}/*`;
   const max = 30;
   const sort = 'desc';
@@ -93,6 +98,7 @@ const Profile = ({ setPostVisible }) => {
             profile={profile}
             visitor={visitor}
             photos={photos.resources}
+            otherName={otherName}
           />
           <ProfileMenu />
         </div>
@@ -103,7 +109,11 @@ const Profile = ({ setPostVisible }) => {
             <PplYouMayKnow />
             <div className="profile_grid">
               <div className="profile_left">
-                <Intro detailss={profile.details} visitor={visitor} />
+                <Intro
+                  detailss={profile.details}
+                  visitor={visitor}
+                  setOtherName={setOtherName}
+                />
                 <Photos
                   username={userName}
                   token={user.token}

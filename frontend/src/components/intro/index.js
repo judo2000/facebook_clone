@@ -3,13 +3,16 @@ import './style.css';
 import Bio from './Bio';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import EditDetails from './EditDetails';
 
-const Intro = ({ detailss, visitor }) => {
+const Intro = ({ detailss, visitor, setOtherName }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const [details, setDetails] = useState();
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     setDetails(detailss);
+    setInfo(detailss);
   }, [detailss]);
 
   const initial = {
@@ -27,11 +30,7 @@ const Intro = ({ detailss, visitor }) => {
   const [info, setInfo] = useState(initial);
   const [showBio, setShowBio] = useState(false);
   const [max, setMax] = useState(info?.bio ? 100 - info?.bio.length : 100);
-  const handleBioChange = (e) => {
-    setInfo({ ...info, bio: e.target.value });
-    setMax(100 - e.target.value.length);
-  };
-
+  const [show, setShow] = useState(false);
   const updateDetails = async () => {
     try {
       console.log('sent');
@@ -48,10 +47,18 @@ const Intro = ({ detailss, visitor }) => {
       );
       setShowBio(false);
       setDetails(data);
+      setOtherName(data.otherName);
     } catch (error) {
       console.log(error.response.data.message);
     }
   };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setInfo({ ...info, [name]: value });
+    setMax(100 - e.target.value.length);
+  };
+  console.log('INFO :', info);
   return (
     <div className="profile_card">
       <div className="profile_card_header">Intro</div>
@@ -69,13 +76,27 @@ const Intro = ({ detailss, visitor }) => {
           )}
         </div>
       )}
+
+      {!details?.bio && !showBio && !visitor && (
+        <button
+          className="gray_btn hover1 w100"
+          onClick={() => setShowBio(true)}
+        >
+          Add Bio
+        </button>
+      )}
+
       {showBio && (
         <Bio
-          info={detailss}
-          handleBioChange={handleBioChange}
+          info={info}
           setShowBio={setShowBio}
+          setShow={setShow}
           max={max}
           updateDetails={updateDetails}
+          placeholder="Add Bio"
+          name="bio"
+          handleChange={handleChange}
+          detail
         />
       )}
       {details?.job && details?.workplace ? (
@@ -140,7 +161,21 @@ const Intro = ({ detailss, visitor }) => {
         </div>
       )}
       {!visitor && (
-        <button className="gray_btn hover1 w100">Edit Details</button>
+        <button
+          className="gray_btn hover1 w100"
+          onClick={() => setVisible(true)}
+        >
+          Edit Details
+        </button>
+      )}
+      {visible && !visitor && (
+        <EditDetails
+          details={details}
+          handleChange={handleChange}
+          updateDetails={updateDetails}
+          info={info}
+          setVisible={setVisible}
+        />
       )}
       {!visitor && (
         <button className="gray_btn hover1 w100">Add Hobbies</button>
